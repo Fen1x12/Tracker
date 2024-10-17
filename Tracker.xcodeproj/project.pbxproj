@@ -53,7 +53,7 @@
 		8491885A2CC09A8000523431 /* TrackerViewControllerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849188532CC09A8000523431 /* TrackerViewControllerType.swift */; };
 		8491885B2CC09A8000523431 /* TypeTrackersLayoutConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849188542CC09A8000523431 /* TypeTrackersLayoutConfigurator.swift */; };
 		8491885C2CC09A8000523431 /* TypeTrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849188552CC09A8000523431 /* TypeTrackersViewController.swift */; };
-		849188622CC1269500523431 /* Tracer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 849188602CC1269500523431 /* Tracer.xcdatamodeld */; };
+		849188652CC12CA600523431 /* Tracer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 849188632CC12CA600523431 /* Tracer.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,7 +105,7 @@
 		849188532CC09A8000523431 /* TrackerViewControllerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackerViewControllerType.swift; sourceTree = "<group>"; };
 		849188542CC09A8000523431 /* TypeTrackersLayoutConfigurator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeTrackersLayoutConfigurator.swift; sourceTree = "<group>"; };
 		849188552CC09A8000523431 /* TypeTrackersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeTrackersViewController.swift; sourceTree = "<group>"; };
-		849188612CC1269500523431 /* Tracer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracer.xcdatamodel; sourceTree = "<group>"; };
+		849188642CC12CA600523431 /* Tracer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracer.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,7 +230,7 @@
 		8491882B2CC09A7700523431 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				849188602CC1269500523431 /* Tracer.xcdatamodeld */,
+				849188632CC12CA600523431 /* Tracer.xcdatamodeld */,
 				849188292CC09A7700523431 /* CoreDataStack.swift */,
 			);
 			path = CoreData;
@@ -412,7 +412,7 @@
 				8491884C2CC09A7B00523431 /* ViewController + Extension Delegate.swift in Sources */,
 				8491881E2CC09A4700523431 /* MainViewController.swift in Sources */,
 				8491884B2CC09A7B00523431 /* ViewController + Extension DataSource.swift in Sources */,
-				849188622CC1269500523431 /* Tracer.xcdatamodeld in Sources */,
+				849188652CC12CA600523431 /* Tracer.xcdatamodeld in Sources */,
 				8491884D2CC09A7B00523431 /* ViewController + Extension DelegateFlowLayout.swift in Sources */,
 				8491883B2CC09A7700523431 /* DayOfTheWeek.swift in Sources */,
 				849188272CC09A7200523431 /* ScheduleCell.swift in Sources */,
@@ -631,12 +631,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		849188602CC1269500523431 /* Tracer.xcdatamodeld */ = {
+		849188632CC12CA600523431 /* Tracer.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				849188612CC1269500523431 /* Tracer.xcdatamodel */,
+				849188642CC12CA600523431 /* Tracer.xcdatamodel */,
 			);
-			currentVersion = 849188612CC1269500523431 /* Tracer.xcdatamodel */;
+			currentVersion = 849188642CC12CA600523431 /* Tracer.xcdatamodel */;
 			name = Tracer.xcdatamodeld;
 			path = "/Users/admin/Documents/test/Tracker/Trackers Models/CoreData/Tracer.xcdatamodeld";
 			sourceTree = "<group>";
