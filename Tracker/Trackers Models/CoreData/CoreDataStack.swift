@@ -12,7 +12,7 @@ final class CoreDataStack {
     static let shared = CoreDataStack()
 
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Tracer")
+        let container = NSPersistentContainer(name: "TrackerCoreData")
         container.loadPersistentStores { (storeDescription, error) in
             if let error = error {
                 Logger.shared.log(.error,
