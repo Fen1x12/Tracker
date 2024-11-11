@@ -39,26 +39,29 @@ final class CreatingTrackerViewController: BaseTrackerViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    // MARK: - Обработчик изменения текста
     override func textViewCellDidChange(_ cell: TextViewCell) {
         updateCreateButtonState()
     }
     
+    // MARK: - Обработчик выбора категории
     override func didSelectCategory(_ category: TrackerCategory) {
         selectedCategory = category
         tableView.reloadData()
         updateCreateButtonState()
     }
     
+    // MARK: - Обработчик выбора дней
     override func didSelect(_ days: [DayOfTheWeek]) {
         self.selectedDays = days
         updateCreateButtonState()
         tableView.reloadRows(
-            at: [IndexPath(row: 1,
-                           section: TrackerSection.buttons.rawValue)],
+            at: [IndexPath(row: 1, section: TrackerSection.buttons.rawValue)],
             with: .automatic
         )
     }
     
+    // MARK: - Обновление состояния кнопки "Создать"
     func updateCreateButtonState() {
         guard let textViewCell = tableView.cellForRow(
             at: IndexPath(row: 0, section: TrackerSection.textView.rawValue)
@@ -96,8 +99,16 @@ final class CreatingTrackerViewController: BaseTrackerViewController {
             selector: #selector(handleColorSelected),
             name: .colorSelected,
             object: nil)
+        
+        // Наблюдатель для изменения текста
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleTextChange),
+            name: UITextView.textDidChangeNotification,
+            object: nil)
     }
     
+    // MARK: - Обработчик нажатия кнопки "Создать"
     func handleCreateButtonTapped() {
         guard let textViewCell = tableView.cellForRow(at: IndexPath(row: 0, section: TrackerSection.textView.rawValue)) as? TextViewCell,
               let trackerName = textViewCell.getText().text, !trackerName.isEmpty,
@@ -137,6 +148,7 @@ final class CreatingTrackerViewController: BaseTrackerViewController {
         presentingViewController?.presentingViewController?.dismiss(animated: true)
     }
     
+    // MARK: - Обработчик выбора эмодзи
     @objc private func handleEmojiSelected(_ notification: Notification) {
         if let emoji = notification.userInfo?["selectedEmoji"] as? String {
             selectedEmoji = emoji
@@ -144,14 +156,21 @@ final class CreatingTrackerViewController: BaseTrackerViewController {
         }
     }
     
+    // MARK: - Обработчик выбора цвета
     @objc private func handleColorSelected(_ notification: Notification) {
         if let hexColor = notification.userInfo?["selectedColor"] as? String {
             selectedColor = UIColor(hex: hexColor)
             updateCreateButtonState()
         }
     }
+    
+    // MARK: - Обработчик изменения текста
+    @objc private func handleTextChange(_ notification: Notification) {
+        updateCreateButtonState()
+    }
 }
 
+// MARK: - UITableViewDataSource
 extension CreatingTrackerViewController {
     override func tableView(
         _ tableView: UITableView,
@@ -169,7 +188,7 @@ extension CreatingTrackerViewController {
     }
 }
 
-// MARK: - cellForRowAt
+// MARK: - UITableViewDelegate
 extension CreatingTrackerViewController {
     override func tableView(
         _ tableView: UITableView,
@@ -206,7 +225,6 @@ extension CreatingTrackerViewController {
             }
             let cell = UITableViewCell()
             let totalRows = isRegularEvent ? 2 : 1
-            
             configureButtonCell(cell, at: indexPath, isSingleCell: isRegularEvent)
             configureBaseCell(cell, at: indexPath, totalRows: totalRows)
             configureSeparator(cell, isLastRow: indexPath.row == (isRegularEvent ? 1 : 0))
