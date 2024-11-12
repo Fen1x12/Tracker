@@ -24,13 +24,11 @@ final class TextViewCell: UITableViewCell {
     
     private let placeholderText = "Введите название трекера"
     private var isVisiblePlaceholder = true
+    private(set) var trackerName: String = ""  // Переменная для хранения текста
     
     private let textView: UITextView = {
         let textView = UITextView()
-        textView.font = UIFont.systemFont(
-            ofSize: 17,
-            weight: .regular
-        )
+        textView.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textColor = .lightGray
         textView.tintColor = .systemBlue
@@ -49,10 +47,7 @@ final class TextViewCell: UITableViewCell {
         contentView.backgroundColor = .ypBackground
         textView.delegate = self
         textView.text = placeholderText
-        textView.font = UIFont.systemFont(
-            ofSize: 17,
-            weight: .regular
-        )
+        textView.font = UIFont.systemFont(ofSize: 17, weight: .regular)
     }
     
     required init?(coder: NSCoder) {
@@ -78,7 +73,7 @@ final class TextViewCell: UITableViewCell {
     }
     
     func isPlaceholderActive() -> Bool {
-        return getText().text == placeholderText
+        return textView.text == placeholderText
     }
     
     func getText() -> UITextView {
@@ -98,15 +93,17 @@ extension TextViewCell: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        trackerName = textView.text  // Сохраняем текст в переменную trackerName
         if textView.text.isEmpty {
             textView.text = placeholderText
             textView.textColor = .lightGray
             isVisiblePlaceholder = true
         }
-        delegate?.textViewCellDidEndEditing(self, text: textView.text)
+        delegate?.textViewCellDidEndEditing(self, text: trackerName)
     }
     
     func textViewDidChange(_ textView: UITextView) {
+        trackerName = textView.text  // Обновляем переменную trackerName
         delegate?.textViewCellDidChange(self)
         
         if textView.text.count == 38 {
