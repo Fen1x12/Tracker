@@ -637,8 +637,7 @@
 				841CA3002CC7C12600FCEDF8 /* Tracer.xcdatamodel */,
 			);
 			currentVersion = 841CA3002CC7C12600FCEDF8 /* Tracer.xcdatamodel */;
-			name = Tracer.xcdatamodeld;
-			path = "/Users/admin/Documents/Tracker/Tracker/Trackers Models/CoreData/Tracer.xcdatamodeld";
+			path = Tracer.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
