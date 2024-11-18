@@ -17,13 +17,12 @@ protocol CategorySelectionDelegate: AnyObject {
 final class CategoryViewController: BaseTrackerViewController {
     
     weak var delegate: CategorySelectionDelegate?
-    
-    private let trackerCategoryStore = TrackerCategoryStore(persistentContainer: CoreDataStack.shared.persistentContainer)
+    private var viewModel: CategoryViewModel
     
     // MARK: - UI Elements
     private lazy var placeholder: Placeholder = {
         let placeholder = Placeholder(
-            image: UIImage(named: "Error"),
+            image: UIImage(named: PHName.trackersPH.rawValue),
             text: "Привычки и события можно\nобъединить по смыслу"
         )
         return placeholder
@@ -51,24 +50,48 @@ final class CategoryViewController: BaseTrackerViewController {
         return stack
     }()
     
+    // MARK: - Initializer
+    init() {
+        // Инициализация ViewModel
+        self.viewModel = CategoryViewModel(
+            trackerCategoryStore: TrackerCategoryStore(
+                persistentContainer: CoreDataStack.shared.persistentContainer
+            )
+        )
+        super.init(type: .category)
+        dataProvider = viewModel
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupBindings()
         setupUI()
-        loadCategories()
-        updatePlaceholder()
+        viewModel.loadCategories()
         dismissKeyboard(view: view)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.loadCategories()
+    }
+    
+    private func setupBindings() {
+        viewModel.onCategoriesUpdated = { [weak self] categories in
+            self?.tableView.reloadData()
+        }
         
-        trackerCategoryStore.didUpdateData = { [weak self] in
-            DispatchQueue.main.async {
-                self?.loadCategories()
-                self?.updatePlaceholder()
-                self?.updateUI()
-            }
+        viewModel.onAddCategoryButtonStateUpdated = { [weak self] isEnabled in
+            self?.addCategoryButton.isEnabled = isEnabled
+            self?.addCategoryButton.backgroundColor = isEnabled ? .ypBlack : .ypGray
+        }
+        
+        viewModel.onPlaceholderStateUpdated = { [weak self] isVisible in
+            self?.placeholder.view.isHidden = !isVisible
         }
     }
     
@@ -93,43 +116,19 @@ final class CategoryViewController: BaseTrackerViewController {
     }
     
     override func deleteCategory(at indexPath: IndexPath) {
-        let deletedCategory = categories[indexPath.row]
-        categories.remove(at: indexPath.row)
-        
-        if selectedCategory?.title == deletedCategory.title {
-            selectedCategory = nil
-        }
-        
-        do {
-            try trackerCategoryStore.deleteCategory(deletedCategory)
-        } catch {
-            Logger.shared.log(
-                .error,
-                message: "Ошибка при удалении категории \(deletedCategory.title)",
-                metadata: ["❌": error.localizedDescription]
-            )
-        }
-        tableView.deleteRows(at: [indexPath], with: .automatic)
+        viewModel.deleteCategory(at: indexPath.row)
     }
 
     // MARK: - Actions
     @objc private func addCategoryButtonAction() {
         if isAddingCategory {
-            if let categoryName = (tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextViewCell)?.getText().text, !categoryName.isEmpty {
-                do {
-                    try trackerCategoryStore.addCategory(TrackerCategory(title: categoryName, trackers: []))
-                } catch {
-                    Logger.shared.log(
-                        .error,
-                        message: "Ошибка при добавлении категории:",
-                        metadata: ["❌": error.localizedDescription]
-                    )
-                }
-            }
+            let categoryName = (tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextViewCell)?.getText().text ?? ""
+            viewModel.addCategory(named: categoryName)
             isAddingCategory = false
         } else {
             isAddingCategory.toggle()
         }
+        viewModel.updateAddCategoryButtonState(isEnabled: !isAddingCategory)
         updateUI()
     }
     
@@ -160,12 +159,8 @@ final class CategoryViewController: BaseTrackerViewController {
     }
     
     private func loadCategories() {
-        categories = trackerCategoryStore.fetchCategories()
-  
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            self.tableView.reloadData()
-        }
+        viewModel.loadCategories()
+        tableView.reloadData()
     }
 }
 
@@ -175,9 +170,12 @@ extension CategoryViewController {
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath) {
             if !isAddingCategory {
-                let selectedCategory = categories[indexPath.row]
-                self.selectedCategory = selectedCategory
-                delegate?.didSelectCategory(selectedCategory)
+                guard let selectedCategoryTitle = dataProvider?.item(at: indexPath.row) else { return }
+                
+                if let selectedCategory = viewModel.categories.first(where: { $0.title == selectedCategoryTitle }) {
+                    self.selectedCategory = selectedCategory
+                    delegate?.didSelectCategory(selectedCategory)
+                }
                 
                 tableView.reloadData()
                 dismissOrCancel()

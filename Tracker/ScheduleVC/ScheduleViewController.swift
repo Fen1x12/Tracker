@@ -11,7 +11,7 @@ protocol ScheduleSelectionDelegate: AnyObject {
     func didSelect(_ days: [DayOfTheWeek])
 }
 
-class ScheduleViewController: BaseTrackerViewController {
+final class ScheduleViewController: BaseTrackerViewController {
     
     weak var delegate: ScheduleSelectionDelegate?
     
@@ -34,7 +34,7 @@ class ScheduleViewController: BaseTrackerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        tableView.reloadData()
+        //tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,8 +69,8 @@ class ScheduleViewController: BaseTrackerViewController {
         
         cell.toggleSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
         
-        configureBaseCell(cell, at: indexPath, totalRows: DayOfTheWeek.allCases.count)
-        configureSeparator(cell, isLastRow: indexPath.row == DayOfTheWeek.allCases.count - 1)
+        ConfigureTableViewCellsHelper.configureBaseCell(cell, at: indexPath, totalRows: DayOfTheWeek.allCases.count)
+        ConfigureTableViewCellsHelper.configureSeparator(cell, isLastRow: indexPath.row == DayOfTheWeek.allCases.count - 1)
         
         return cell
     }
