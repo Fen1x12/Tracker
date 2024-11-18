@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+//
 final class OnboardingViewController: UIViewController {
     
     private let onboardingStatus = OnboardingStatus()
