@@ -10,12 +10,11 @@ import UIKit
 final class MainViewController: UIViewController {
     
     private let trackersViewController = TrackersViewController()
-    private let statisticViewController = StatisticViewController()
+    private let statisticViewController = StatisticsViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         switchToTapBarController()
-        //CoreDataStack.shared.clearCoreData()
     }
     
     private func switchToTapBarController() {
@@ -35,7 +34,8 @@ final class MainViewController: UIViewController {
     }
     
     private func createTabBarController() -> UITabBarController {
-        let navigationController = trackersViewController.setupNavigationBar()
+        let trackersNavigationController = trackersViewController.setupNavigationBar()
+        let statisticsNavigationController = statisticViewController.setupNavigationBar()
         
         let trackerStore = TrackerStore(persistentContainer: CoreDataStack.shared.persistentContainer)
         let categoryStore = TrackerCategoryStore(persistentContainer: CoreDataStack.shared.persistentContainer)
@@ -46,7 +46,7 @@ final class MainViewController: UIViewController {
             recordStore: recordStore
         )
         
-        trackersViewController.configure(trackersPresenter as TrackersPresenterProtocol)
+        trackersViewController.configure(trackersPresenter)
         
         trackersViewController.tabBarItem = UITabBarItem(
             title: "Трекеры",
@@ -62,8 +62,8 @@ final class MainViewController: UIViewController {
         let tabBarController = UITabBarController()
         
         tabBarController.viewControllers = [
-            navigationController,
-            statisticViewController
+            trackersNavigationController,
+            statisticsNavigationController,
         ]
         
         tabBarController.tabBar.tintColor = .systemBlue
