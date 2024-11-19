@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		841CA3012CC7C12600FCEDF8 /* Tracer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 841CA2FF2CC7C12600FCEDF8 /* Tracer.xcdatamodeld */; };
+		841CA3012CC7C12600FCEDF8 /* TrackerCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 841CA2FF2CC7C12600FCEDF8 /* TrackerCoreData.xcdatamodeld */; };
 		843900F32CEB156500F7CB54 /* SViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843900F22CEB156500F7CB54 /* SViewModel.swift */; };
 		843900F52CEB158700F7CB54 /* StatisticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843900F42CEB158700F7CB54 /* StatisticsData.swift */; };
 		843900F72CEB15A100F7CB54 /* StatisticCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843900F62CEB15A100F7CB54 /* StatisticCell.swift */; };
@@ -73,7 +73,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		841CA3002CC7C12600FCEDF8 /* Tracer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracer.xcdatamodel; sourceTree = "<group>"; };
+		841CA3002CC7C12600FCEDF8 /* TrackerCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerCoreData.xcdatamodel; sourceTree = "<group>"; };
 		843900F22CEB156500F7CB54 /* SViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SViewModel.swift; sourceTree = "<group>"; };
 		843900F42CEB158700F7CB54 /* StatisticsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsData.swift; sourceTree = "<group>"; };
 		843900F62CEB15A100F7CB54 /* StatisticCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticCell.swift; sourceTree = "<group>"; };
@@ -304,7 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				849188292CC09A7700523431 /* CoreDataStack.swift */,
-				841CA2FF2CC7C12600FCEDF8 /* Tracer.xcdatamodeld */,
+				841CA2FF2CC7C12600FCEDF8 /* TrackerCoreData.xcdatamodeld */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -500,7 +500,7 @@
 				8491881E2CC09A4700523431 /* MainViewController.swift in Sources */,
 				843901002CEB1B1C00F7CB54 /* ContextMenuHelper.swift in Sources */,
 				8491884B2CC09A7B00523431 /* ViewController + Extension DataSource.swift in Sources */,
-				841CA3012CC7C12600FCEDF8 /* Tracer.xcdatamodeld in Sources */,
+				841CA3012CC7C12600FCEDF8 /* TrackerCoreData.xcdatamodeld in Sources */,
 				8491884D2CC09A7B00523431 /* ViewController + Extension DelegateFlowLayout.swift in Sources */,
 				8491883B2CC09A7700523431 /* DayOfTheWeek.swift in Sources */,
 				849188272CC09A7200523431 /* ScheduleCell.swift in Sources */,
@@ -675,6 +675,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -702,6 +703,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -739,13 +741,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		841CA2FF2CC7C12600FCEDF8 /* Tracer.xcdatamodeld */ = {
+		841CA2FF2CC7C12600FCEDF8 /* TrackerCoreData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				841CA3002CC7C12600FCEDF8 /* Tracer.xcdatamodel */,
+				841CA3002CC7C12600FCEDF8 /* TrackerCoreData.xcdatamodel */,
 			);
-			currentVersion = 841CA3002CC7C12600FCEDF8 /* Tracer.xcdatamodel */;
-			path = Tracer.xcdatamodeld;
+			currentVersion = 841CA3002CC7C12600FCEDF8 /* TrackerCoreData.xcdatamodel */;
+			path = TrackerCoreData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
