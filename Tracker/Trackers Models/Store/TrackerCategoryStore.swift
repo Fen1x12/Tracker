@@ -43,23 +43,18 @@ final class TrackerCategoryStore: NSObject {
     
     func addCategory(_ category: TrackerCategory) throws {
         let context = persistentContainer.viewContext
-        
-        // Проверка на существование категории
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "title == %@", category.title)
         
         let existingCategories = try context.fetch(fetchRequest)
         
-        if existingCategories.first != nil {
-            return
+        if existingCategories.isEmpty {
+            let categoryCoreData = TrackerCategoryCoreData(context: context)
+            categoryCoreData.title = category.title
+            try context.save()
         }
         
-        let categoryCoreData = TrackerCategoryCoreData(context: context)
-        categoryCoreData.title = category.title
-        
-        try context.save()
         try fetchedResultsController.performFetch()
-        
         DispatchQueue.main.async { [weak self] in
             self?.didUpdateData?()
         }
@@ -111,5 +106,13 @@ final class TrackerCategoryStore: NSObject {
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         didUpdateData?()
+    }
+}
+
+extension TrackerCategoryStore {
+    func notifyDataUpdate() {
+        DispatchQueue.main.async { [weak self] in
+            self?.didUpdateData?()
+        }
     }
 }

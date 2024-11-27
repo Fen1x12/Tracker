@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by  Admin on 19.11.2024.
+  
+*/
+
+"day_one" = "%d day";
+"day_few" = "%d days";
+"day_many" = "%d days";

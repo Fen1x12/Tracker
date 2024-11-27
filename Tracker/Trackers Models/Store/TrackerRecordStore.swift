@@ -1,8 +1,8 @@
 //
-//  RecordStore.swift
+//  TrackerRecordStore.swift
 //  Tracker
 //
-//  Created by  Admin on 16.10.2024.
+//  Created by  Admin on 27.11.2024.
 //
 
 import Foundation
@@ -74,6 +74,20 @@ final class TrackerRecordStore {
                 message: "Ошибка при загрузке записей из Core Data",
                 metadata: ["❌": error.localizedDescription]
             )
+            return []
+        }
+    }
+    
+    func fetchCompletedTrackerIds(for dateString: String) -> Set<UUID> {
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
+        
+        fetchRequest.predicate = NSPredicate(format: "date == %@", dateString)
+        
+        do {
+            let completedRecords = try persistentContainer.viewContext.fetch(fetchRequest)
+            return Set(completedRecords.compactMap { $0.trackerId })
+        } catch {
+            Logger.shared.log(.error, message: "Ошибка при загрузке завершенных трекеров: \(error.localizedDescription)")
             return []
         }
     }

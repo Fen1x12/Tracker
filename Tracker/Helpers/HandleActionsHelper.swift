@@ -20,7 +20,7 @@ final class HandleActionsHelper {
             viewController.present(navController, animated: true)
         } else if indexPath.section == 1 {
             let irregularEventVC = CreatingTrackerViewController(type: .creatingTracker, isRegularEvent: false)
-            irregularEventVC.title = "Нерегулярное событие"
+            irregularEventVC.title = LocalizationKey.irregularEvent.localized()
             let navController = UINavigationController(rootViewController: irregularEventVC)
             navController.modalPresentationStyle = .formSheet
             viewController.present(navController, animated: true)
@@ -47,7 +47,7 @@ final class HandleActionsHelper {
                 navController.modalPresentationStyle = .formSheet
                 viewController.present(navController, animated: true)
             } else {
-                print("Неизвестный индекс ячейки: \(indexPath.row)")
+                Logger.shared.log(.error, message: "Неизвестный индекс ячейки: \(indexPath.row)")
             }
         }
     }
@@ -67,19 +67,17 @@ final class HandleActionsHelper {
         viewController: BaseTrackerViewController
     ) {
         guard let dataProvider = viewController.dataProvider, indexPath.row < dataProvider.numberOfItems else {
-            print("Ошибка: индекс \(indexPath.row) выходит за пределы источника данных.")
+            Logger.shared.log(.error, message: "Ошибка: индекс \(indexPath.row) выходит за пределы источника данных.")
             return
         }
 
         guard indexPath.row < viewController.categories.count else {
-            print("Ошибка: индекс \(indexPath.row) выходит за пределы массива категорий.")
+            Logger.shared.log(.error, message: "Ошибка: индекс \(indexPath.row) выходит за пределы массива категорий.")
             return
         }
 
         viewController.editingCategoryIndex = indexPath
         viewController.isAddingCategory = true
-
-        print("Начинаем редактирование категории на индексе \(indexPath.row)")
         viewController.tableView.reloadData()
     }
 
@@ -95,7 +93,7 @@ final class HandleActionsHelper {
 
         if let editingIndex = viewController.editingCategoryIndex {
             guard editingIndex.row < viewController.categories.count else {
-                print("Ошибка: индекс \(editingIndex.row) выходит за пределы массива категорий.")
+                Logger.shared.log(.error, message: "Ошибка: индекс \(editingIndex.row) выходит за пределы массива категорий.")
                 return
             }
             viewController.categories[editingIndex.row] = newCategory
@@ -114,7 +112,6 @@ final class HandleActionsHelper {
     ) {
         if let emoji = notification.userInfo?["selectedEmoji"] as? String {
             viewController.selectedEmoji = emoji
-            viewController.updateCreateButtonState()
         }
     }
     
@@ -124,7 +121,6 @@ final class HandleActionsHelper {
     ) {
         if let hexColor = notification.userInfo?["selectedColor"] as? String {
             viewController.selectedColor = UIColor(hex: hexColor)
-            viewController.updateCreateButtonState()
         }
     }
 }

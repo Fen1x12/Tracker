@@ -5,7 +5,7 @@
 //  Created by  Admin on 16.10.2024.
 //
 
-import UIKit
+mport UIKit
 
 final class EmojiesAndColorsCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = "CollectionViewCell"
@@ -21,7 +21,8 @@ final class EmojiesAndColorsCollectionViewCell: UICollectionViewCell {
     private let colorView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 8
+        view.layer.masksToBounds = true
         return view
     }()
     
@@ -30,6 +31,7 @@ final class EmojiesAndColorsCollectionViewCell: UICollectionViewCell {
         setupUI()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -39,7 +41,8 @@ final class EmojiesAndColorsCollectionViewCell: UICollectionViewCell {
             contentView.addSubview($0)
         }
         contentView.backgroundColor = .clear
-        contentView.layer.cornerRadius = 15
+        contentView.layer.cornerRadius = 16
+        contentView.layer.masksToBounds = true
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),

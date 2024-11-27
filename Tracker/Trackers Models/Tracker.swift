@@ -16,6 +16,8 @@ struct Tracker: Codable, Hashable {
     let categoryTitle: String
     let isRegularEvent: Bool
     let creationDate: Date?
+    var isPinned: Bool
+    var originalCategoryTitle: String?
 }
 
 extension Tracker {
@@ -27,19 +29,26 @@ extension Tracker {
         self.categoryTitle = coreData.categoryTitle ?? ""
         self.isRegularEvent = coreData.isRegularEvent
         self.creationDate = coreData.creationDate ?? Date()
+        self.isPinned = coreData.isPinned
+        self.originalCategoryTitle = coreData.originalCategoryTitle
 
-        if let scheduleData = coreData.schedule as? Data {
-            if let decodedSchedule = try? JSONDecoder().decode([String].self, from: scheduleData) {
-                self.schedule = decodedSchedule
-            } else {
+        if let scheduleString = coreData.schedule,
+           let scheduleData = scheduleString.data(using: .utf8) {
+            do {
+                self.schedule = try JSONDecoder().decode([String].self, from: scheduleData)
+            } catch {
                 Logger.shared.log(
                     .error,
-                    message: "Ошибка десериализации расписания для трекера",
-                    metadata: ["❌": "\(self.name)"]
+                    message: "Ошибка десериализации расписания для трекера: \(self.name)",
+                    metadata: ["❌": error.localizedDescription]
                 )
                 self.schedule = []
             }
         } else {
+            Logger.shared.log(
+                .error,
+                message: "Ошибка: расписание для трекера пустое или неверного формата: \(self.name)"
+            )
             self.schedule = []
         }
     }

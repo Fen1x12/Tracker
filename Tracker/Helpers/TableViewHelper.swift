@@ -57,8 +57,7 @@ final class TableViewHelper {
                     tableView: tableView,
                     categories: categories,
                     viewController: viewController,
-                    editingCategoryIndex: editingCategoryIndex,
-                    isAddingCategory: isAddingCategory
+                    editingCategoryIndex: editingCategoryIndex
                 )
             } else {
                 return ConfigureTableViewCellsHelper.configureCategoryCell(
@@ -93,14 +92,17 @@ final class TableViewHelper {
         }
     }
     
-    static func calculateCellHeight(for tableView: UITableView, itemCount: Int, itemsPerRow: Int) -> CGFloat {
+    static func calculateCellHeight(
+        for tableView: UITableView,
+        itemCount: Int,
+        itemsPerRow: Int
+    ) -> CGFloat {
         let collectionViewWidth = tableView.frame.width
-        let cellSpacing: CGFloat = 5
-        let leftInset: CGFloat = 10
-        let rightInset: CGFloat = 10
+        let cellSpacing = CGFloat(5)
+        let insets = CGFloat(10)
 
         let totalSpacing = (CGFloat(itemsPerRow - 1) * cellSpacing)
-        let totalInsets = leftInset + rightInset
+        let totalInsets = insets * 2
         let availableWidth = collectionViewWidth - totalInsets - totalSpacing
         let itemWidth = availableWidth / CGFloat(itemsPerRow)
         

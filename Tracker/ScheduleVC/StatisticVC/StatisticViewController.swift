@@ -7,61 +7,42 @@
 
 import UIKit
 
-final class StatisticsViewController: UIViewController {
+final class StatisticsViewController: BaseViewController {
     
-    private let viewModel = StatisticsViewModel()
+    private let viewModel: StatisticsViewModel
     
-    private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 16
-        layout.itemSize = CGSize(width: view.frame.width - 32, height: 80)
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.backgroundColor = .white
-        collectionView.register(StatisticCell.self, forCellWithReuseIdentifier: StatisticCell.reuseIdentifier)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
-    
-    private lazy var placeholder: Placeholder = {
-        let placeholder = Placeholder(
-            image: UIImage(named: PHName.statisticPH.rawValue),
-            text: "Анализировать пока нечего"
+    init(viewModel: StatisticsViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(
+            type: .statistics,
+            placeholderImageName: PHName.statisticPH.rawValue,
+            placeholderText: LocalizationKey.statisticsPlaceholder.localized()
         )
-        return placeholder
-    }()
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBackground
-        self.title = "Статистика"
-        setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.fetchStatistics()
         updatePlaceholderView()
     }
-    
-    private func setupUI() {
-        [collectionView, placeholder.view].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
-        }
-        
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
 
-            placeholder.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            placeholder.view.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-    }
-    
     func updatePlaceholderView() {
         let hasData = viewModel.hasStatistics
         
         collectionView.isHidden = !hasData
-        placeholder.view.isHidden = hasData
+        placeholder.isHidden = hasData
         
         if hasData {
             collectionView.reloadData()
@@ -78,29 +59,74 @@ final class StatisticsViewController: UIViewController {
     }
 }
 
-// MARK: - UICollectionViewDataSource
-extension StatisticsViewController: UICollectionViewDataSource {
-    func collectionView(
+extension StatisticsViewController {
+    override func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
         return 4
     }
     
-    func collectionView(
+    override func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "StatisticCell",
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: StatisticCell.reuseIdentifier,
             for: indexPath
-        ) as? StatisticCell ?? UICollectionViewCell()
+        ) as? StatisticCell else {
+            return UICollectionViewCell()
+        }
+        
+        let statistic = viewModel.getStatistic(for: indexPath.row)
+        
+        let gradientColors: [UIColor] = [
+            .ypBorderStatRed,
+            .ypBorderStatGreen,
+            .ypBorderStatBlue
+        ]
+        
+        cell.configure(
+            with: "\(statistic.value)",
+            title: statistic.title,
+            gradientColors: gradientColors
+        )
         
         return cell
     }
 }
 
-// MARK: - UICollectionViewDelegate
-extension StatisticsViewController: UICollectionViewDelegate {
+extension StatisticsViewController {
+    override func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = collectionView.bounds.width
+        return CGSize(width: width, height: 90)
+    }
     
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        let numberOfItems = collectionView.numberOfItems(inSection: section)
+        
+        let cellHeight: CGFloat = 90
+        let minimumLineSpacing: CGFloat = 12
+        let totalCellHeight = (cellHeight * CGFloat(numberOfItems)) + (minimumLineSpacing * CGFloat(numberOfItems - 1))
+        let availableHeight = collectionView.bounds.height
+        let topInset = max((availableHeight - totalCellHeight) / 2, 16)
+        
+        return UIEdgeInsets(top: topInset, left: 15, bottom: 16, right: 15)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        return 12
+    }
 }

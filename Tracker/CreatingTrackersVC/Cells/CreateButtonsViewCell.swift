@@ -16,7 +16,7 @@ final class CreateButtonsViewCell: UITableViewCell {
     
     private lazy var createButton: UIButton = {
         let button = addButton(
-            with: "Создать",
+            with: LocalizationKey.createNewTracker.localized(),
             backgroundColor: .ypGray,
             titleColor: .white,
             action: #selector(createButtonAction)
@@ -26,7 +26,7 @@ final class CreateButtonsViewCell: UITableViewCell {
     
     private lazy var cancelButton: UIButton = {
         let button = addButton(
-            with: "Отменить",
+            with: LocalizationKey.cancelCreateNewTracker.localized(),
             backgroundColor: .clear,
             titleColor: .ypRed,
             action: #selector(cancelButtonAction)
@@ -55,6 +55,7 @@ final class CreateButtonsViewCell: UITableViewCell {
         contentView.backgroundColor = .ypBackground
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -91,7 +92,7 @@ final class CreateButtonsViewCell: UITableViewCell {
             ofSize: 16,
             weight: .medium
         )
-        button.layer.cornerRadius = 15
+        button.layer.cornerRadius = 16
         button.isUserInteractionEnabled = true
         button.addTarget(self, action: action, for: .touchUpInside)
         return button
@@ -112,7 +113,14 @@ final class CreateButtonsViewCell: UITableViewCell {
             createButton.isUserInteractionEnabled = true
         } else {
             createButton.backgroundColor = .ypGray
-            
         }
+    }
+    
+    func updateCreateButtonTitle(isEditing: Bool) {
+        let title = isEditing
+        ? LocalizationKey.saveTracker
+        : LocalizationKey.createNewTracker
+        
+        createButton.setTitle(title.localized(), for: .normal)
     }
 }

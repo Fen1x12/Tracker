@@ -8,9 +8,11 @@
 import UIKit
 
 final class TrackersCardCell: UICollectionViewCell {
+    
     static let reuseIdentifier = "TrackersCell"
     
     var selectButtonTappedHandler: (() -> Void)?
+    var longPressHandler: (() -> Void)?
     
     private lazy var mainVerticalStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
@@ -22,7 +24,7 @@ final class TrackersCardCell: UICollectionViewCell {
         return stack
     }()
     
-    private lazy var messageStack: UIStackView = {
+    lazy var messageStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
             emoji,
             nameLabel
@@ -30,15 +32,16 @@ final class TrackersCardCell: UICollectionViewCell {
         stack.axis = .vertical
         stack.alignment = .leading
         stack.spacing = 8
-        stack.layer.cornerRadius = 15
+        stack.layer.cornerRadius = 13
         stack.layer.masksToBounds = true
         stack.isLayoutMarginsRelativeArrangement = true
         stack.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 10, right: 12)
         stack.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        
         return stack
     }()
     
-    private lazy var nameLabel: UILabel = {
+    lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(
             ofSize: 12,
@@ -49,7 +52,7 @@ final class TrackersCardCell: UICollectionViewCell {
         return label
     }()
     
-    private let emoji: UILabel = {
+    lazy var emoji: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(
             ofSize: 16,
@@ -62,6 +65,21 @@ final class TrackersCardCell: UICollectionViewCell {
         label.widthAnchor.constraint(equalToConstant: 24).isActive = true
         label.heightAnchor.constraint(equalToConstant: 24).isActive = true
         return label
+    }()
+    
+    private lazy var pinImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "pin.fill")
+        imageView.tintColor = .white
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isHidden = true
+        return imageView
+    }()
+    
+    private lazy var pinContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private lazy var horizontalStack: UIStackView = {
@@ -124,24 +142,56 @@ final class TrackersCardCell: UICollectionViewCell {
         setupConstraints()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func setupConstraints() {
-        contentView.addSubview(mainVerticalStack)
+        [mainVerticalStack, pinContainerView].forEach {
+            contentView.addSubview($0)
+        }
+        pinContainerView.addSubview(pinImageView)
+        
         mainVerticalStack.translatesAutoresizingMaskIntoConstraints = false
+        mainVerticalStack.layer.cornerRadius = 16
+        mainVerticalStack.layer.masksToBounds = true
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        messageStack.addGestureRecognizer(longPressGesture)
         
         NSLayoutConstraint.activate([
             mainVerticalStack.topAnchor.constraint(equalTo: contentView.topAnchor),
             mainVerticalStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             mainVerticalStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            mainVerticalStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            mainVerticalStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            pinContainerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            pinContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
+            pinContainerView.widthAnchor.constraint(equalToConstant: 24),
+            pinContainerView.heightAnchor.constraint(equalToConstant: 24),
+            
+            pinImageView.topAnchor.constraint(equalTo: pinContainerView.topAnchor, constant: 6),
+            pinImageView.leadingAnchor.constraint(equalTo: pinContainerView.leadingAnchor, constant: 8),
+            pinImageView.trailingAnchor.constraint(equalTo: pinContainerView.trailingAnchor, constant: -6),
+            pinImageView.bottomAnchor.constraint(equalTo: pinContainerView.bottomAnchor, constant: -6)
         ])
     }
     
     @objc private func completeButtonTapped() {
         selectButtonTappedHandler?()
+    }
+    
+    @objc private func handleLongPress() {
+        longPressHandler?()
+
+        UIView.animate(withDuration: 0.2, animations: {
+            self.contentView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+        }) { _ in
+            UIView.animate(withDuration: 0.2) {
+                self.contentView.transform = CGAffineTransform.identity
+            }
+        }
     }
     
     func configure(with tracker: Tracker,
@@ -171,18 +221,9 @@ final class TrackersCardCell: UICollectionViewCell {
             return record.trackerId == tracker.id
         }.count
         
-        let day = getLocalizedDayString(for: countDays)
+        let day = ConfigureTableViewCellsHelper.getLocalizedDayString(for: countDays)
         counterLabel.text = day
-    }
-    
-    private func getLocalizedDayString(for countDays: Int) -> String {
-        switch countDays {
-        case 1:
-            return String(format: NSLocalizedString("day_one", comment: ""), countDays)
-        case 2...4:
-            return String(format: NSLocalizedString("day_few", comment: ""), countDays)
-        default:
-            return String(format: NSLocalizedString("day_many", comment: ""), countDays)
-        }
+        
+        pinImageView.isHidden = !tracker.isPinned
     }
 }
