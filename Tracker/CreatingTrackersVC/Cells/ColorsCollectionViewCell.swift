@@ -5,7 +5,7 @@
 //  Created by  Admin on 16.10.2024.
 //
 
-mport UIKit
+import UIKit
 
 final class EmojiesAndColorsCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = "CollectionViewCell"

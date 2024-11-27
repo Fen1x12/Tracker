@@ -14,7 +14,7 @@
 		843900F92CEB175000F7CB54 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843900F82CEB175000F7CB54 /* CategoryViewModel.swift */; };
 		843900FC2CEB1AEB00F7CB54 /* ColorDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843900FB2CEB1AEB00F7CB54 /* ColorDataProvider.swift */; };
 		843900FE2CEB1B0900F7CB54 /* TableViewCellsHelper..swift in Sources */ = {isa = PBXBuildFile; fileRef = 843900FD2CEB1B0900F7CB54 /* TableViewCellsHelper..swift */; };
-		843901002CEB1B1C00F7CB54 /* ContextMenuHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843900FF2CEB1B1C00F7CB54 /* ContextMenuHelper.swift */; };
+		843901002CEB1B1C00F7CB54 /* ContextMenHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843900FF2CEB1B1C00F7CB54 /* ContextMenHelper.swift */; };
 		843901022CEB1B2900F7CB54 /* EmojiDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843901012CEB1B2900F7CB54 /* EmojiDataProvider.swift */; };
 		843901042CEB1B3600F7CB54 /* HandleActionsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843901032CEB1B3600F7CB54 /* HandleActionsHelper.swift */; };
 		843901062CEB1B4900F7CB54 /* TableViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843901052CEB1B4900F7CB54 /* TableViewHelper.swift */; };
@@ -82,7 +82,7 @@
 		84C222982CF68115005FF976 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222962CF68115005FF976 /* TrackerTests.swift */; };
 		84C2229A2CF686D7005FF976 /* TrackerDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222992CF686D5005FF976 /* TrackerDataProvider.swift */; };
 		84C2229C2CF68B91005FF976 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2229B2CF68B8F005FF976 /* TrackerRecordStore.swift */; };
-		84C2229E2CF68E0C005FF976 /* ContextMenuHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2229D2CF68E0B005FF976 /* ContextMenuHelper.swift */; };
+		84C2229E2CF68E0C005FF976 /* ContextMHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2229D2CF68E0B005FF976 /* ContextMHelper.swift */; };
 		84C222A02CF68F01005FF976 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2229F2CF68F00005FF976 /* BaseViewController.swift */; };
 		84C222A22CF68F1D005FF976 /* ViewControllerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222A12CF68F1B005FF976 /* ViewControllerType.swift */; };
 		84C222A52CF68FA3005FF976 /* ContextMenuHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222A42CF68FA2005FF976 /* ContextMenuHelper.swift */; };
@@ -127,7 +127,7 @@
 		843900F82CEB175000F7CB54 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		843900FB2CEB1AEB00F7CB54 /* ColorDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDataProvider.swift; sourceTree = "<group>"; };
 		843900FD2CEB1B0900F7CB54 /* TableViewCellsHelper..swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellsHelper..swift; sourceTree = "<group>"; };
-		843900FF2CEB1B1C00F7CB54 /* ContextMenuHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuHelper.swift; sourceTree = "<group>"; };
+		843900FF2CEB1B1C00F7CB54 /* ContextMenHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenHelper.swift; sourceTree = "<group>"; };
 		843901012CEB1B2900F7CB54 /* EmojiDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiDataProvider.swift; sourceTree = "<group>"; };
 		843901032CEB1B3600F7CB54 /* HandleActionsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleActionsHelper.swift; sourceTree = "<group>"; };
 		843901052CEB1B4900F7CB54 /* TableViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHelper.swift; sourceTree = "<group>"; };
@@ -194,7 +194,7 @@
 		84C222962CF68115005FF976 /* TrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTests.swift; sourceTree = "<group>"; };
 		84C222992CF686D5005FF976 /* TrackerDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerDataProvider.swift; sourceTree = "<group>"; };
 		84C2229B2CF68B8F005FF976 /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
-		84C2229D2CF68E0B005FF976 /* ContextMenuHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuHelper.swift; sourceTree = "<group>"; };
+		84C2229D2CF68E0B005FF976 /* ContextMHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMHelper.swift; sourceTree = "<group>"; };
 		84C2229F2CF68F00005FF976 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		84C222A12CF68F1B005FF976 /* ViewControllerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerType.swift; sourceTree = "<group>"; };
 		84C222A42CF68FA2005FF976 /* ContextMenuHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuHelper.swift; sourceTree = "<group>"; };
@@ -251,7 +251,7 @@
 				84C222992CF686D5005FF976 /* TrackerDataProvider.swift */,
 				843900FB2CEB1AEB00F7CB54 /* ColorDataProvider.swift */,
 				843900FD2CEB1B0900F7CB54 /* TableViewCellsHelper..swift */,
-				843900FF2CEB1B1C00F7CB54 /* ContextMenuHelper.swift */,
+				843900FF2CEB1B1C00F7CB54 /* ContextMenHelper.swift */,
 				843901012CEB1B2900F7CB54 /* EmojiDataProvider.swift */,
 				843901032CEB1B3600F7CB54 /* HandleActionsHelper.swift */,
 				843901052CEB1B4900F7CB54 /* TableViewHelper.swift */,
@@ -462,7 +462,7 @@
 		849188482CC09A7B00523431 /* TrackersVC */ = {
 			isa = PBXGroup;
 			children = (
-				84C2229D2CF68E0B005FF976 /* ContextMenuHelper.swift */,
+				84C2229D2CF68E0B005FF976 /* ContextMHelper.swift */,
 				849188412CC09A7B00523431 /* TrackersVC Cells */,
 				849188452CC09A7B00523431 /* TrackersVC Extensions */,
 				849188462CC09A7B00523431 /* TrackersPresenter.swift */,
@@ -772,11 +772,11 @@
 				849188172CC09A3C00523431 /* ColorsTableViewCell.swift in Sources */,
 				84C222972CF68115005FF976 /* TrackerTests.swift in Sources */,
 				84AFF9C22CF5F12A00E8867E /* GradientBorderView.swift in Sources */,
-				84C2229E2CF68E0C005FF976 /* ContextMenuHelper.swift in Sources */,
+				84C2229E2CF68E0C005FF976 /* ContextMHelper.swift in Sources */,
 				8491883E2CC09A7700523431 /* TRecord.swift in Sources */,
 				8491884C2CC09A7B00523431 /* ViewController + Extension Delegate.swift in Sources */,
 				8491881E2CC09A4700523431 /* MainViewController.swift in Sources */,
-				843901002CEB1B1C00F7CB54 /* ContextMenuHelper.swift in Sources */,
+				843901002CEB1B1C00F7CB54 /* ContextMenHelper.swift in Sources */,
 				8491884B2CC09A7B00523431 /* ViewController + Extension DataSource.swift in Sources */,
 				84C222AC2CF741D6005FF976 /* TrackersFilterManager.swift in Sources */,
 				841CA3012CC7C12600FCEDF8 /* TrackerCoreData.xcdatamodeld in Sources */,
@@ -974,7 +974,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Yandex-Practicum.Tracker";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Tracker/Tracker-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = Tracker/Tracker-Bridging-Header.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1006,7 +1006,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Yandex-Practicum.Tracker";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Tracker/Tracker-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = Tracker/Tracker-Bridging-Header.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1026,7 +1026,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.dt.Xcode.TrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Tracker/TrackerTests-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = Tracker/Tracker-Bridging-Header.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1048,7 +1048,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.dt.Xcode.TrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Tracker/TrackerTests-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = Tracker/Tracker-Bridging-Header.h;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tracker";
