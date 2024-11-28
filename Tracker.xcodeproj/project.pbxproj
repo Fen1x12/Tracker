@@ -78,7 +78,6 @@
 		84C222922CF6800B005FF976 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 84C222912CF6800B005FF976 /* SnapshotTesting */; };
 		84C222932CF680A7005FF976 /* Pods_Tracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9864D629BB1071271F0AD71 /* Pods_Tracker.framework */; };
 		84C222942CF680A7005FF976 /* Pods_Tracker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B9864D629BB1071271F0AD71 /* Pods_Tracker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		84C222972CF68115005FF976 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222962CF68115005FF976 /* TrackerTests.swift */; };
 		84C222982CF68115005FF976 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222962CF68115005FF976 /* TrackerTests.swift */; };
 		84C2229A2CF686D7005FF976 /* TrackerDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222992CF686D5005FF976 /* TrackerDataProvider.swift */; };
 		84C2229C2CF68B91005FF976 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2229B2CF68B8F005FF976 /* TrackerRecordStore.swift */; };
@@ -770,7 +769,6 @@
 				84C2229A2CF686D7005FF976 /* TrackerDataProvider.swift in Sources */,
 				849188192CC09A3C00523431 /* TextViewCell.swift in Sources */,
 				849188172CC09A3C00523431 /* ColorsTableViewCell.swift in Sources */,
-				84C222972CF68115005FF976 /* TrackerTests.swift in Sources */,
 				84AFF9C22CF5F12A00E8867E /* GradientBorderView.swift in Sources */,
 				84C2229E2CF68E0C005FF976 /* ContextMHelper.swift in Sources */,
 				8491883E2CC09A7700523431 /* TRecord.swift in Sources */,
@@ -974,7 +972,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Yandex-Practicum.Tracker";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = Tracker/Tracker-Bridging-Header.h;
+				SWIFT_OBJC_BRIDGING_HEADER = "Tracker/Tracker-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1006,7 +1004,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Yandex-Practicum.Tracker";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = Tracker/Tracker-Bridging-Header.h;
+				SWIFT_OBJC_BRIDGING_HEADER = "Tracker/Tracker-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1026,7 +1024,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.dt.Xcode.TrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = Tracker/Tracker-Bridging-Header.h;
+				SWIFT_OBJC_BRIDGING_HEADER = "Tracker/Tracker-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1048,7 +1046,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.dt.Xcode.TrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = Tracker/Tracker-Bridging-Header.h;
+				SWIFT_OBJC_BRIDGING_HEADER = "Tracker/Tracker-Bridging-Header.h";
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tracker";
