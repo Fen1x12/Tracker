@@ -84,7 +84,6 @@
 		84C2229E2CF68E0C005FF976 /* ContextMHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2229D2CF68E0B005FF976 /* ContextMHelper.swift */; };
 		84C222A02CF68F01005FF976 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2229F2CF68F00005FF976 /* BaseViewController.swift */; };
 		84C222A22CF68F1D005FF976 /* ViewControllerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222A12CF68F1B005FF976 /* ViewControllerType.swift */; };
-		84C222A52CF68FA3005FF976 /* ContextMenuHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222A42CF68FA2005FF976 /* ContextMenuHelper.swift */; };
 		84C222A72CF73D1D005FF976 /* StatisticsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222A62CF73D1B005FF976 /* StatisticsStore.swift */; };
 		84C222AA2CF741B3005FF976 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222A92CF741B2005FF976 /* FilterViewController.swift */; };
 		84C222AC2CF741D6005FF976 /* TrackersFilterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C222AB2CF741D5005FF976 /* TrackersFilterManager.swift */; };
@@ -196,7 +195,6 @@
 		84C2229D2CF68E0B005FF976 /* ContextMHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMHelper.swift; sourceTree = "<group>"; };
 		84C2229F2CF68F00005FF976 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		84C222A12CF68F1B005FF976 /* ViewControllerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerType.swift; sourceTree = "<group>"; };
-		84C222A42CF68FA2005FF976 /* ContextMenuHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuHelper.swift; sourceTree = "<group>"; };
 		84C222A62CF73D1B005FF976 /* StatisticsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsStore.swift; sourceTree = "<group>"; };
 		84C222A92CF741B2005FF976 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		84C222AB2CF741D5005FF976 /* TrackersFilterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersFilterManager.swift; sourceTree = "<group>"; };
@@ -377,7 +375,6 @@
 		8491881D2CC09A4700523431 /* MainViewController */ = {
 			isa = PBXGroup;
 			children = (
-				84C222A32CF68F86005FF976 /* Helper */,
 				8491881C2CC09A4700523431 /* MainViewController.swift */,
 				849188242CC09A7200523431 /* ScheduleViewController.swift */,
 				84C2229F2CF68F00005FF976 /* BaseViewController.swift */,
@@ -497,14 +494,6 @@
 				84AFF9BD2CF5EF9B00E8867E /* KeychainService.swift */,
 			);
 			path = KeychainService;
-			sourceTree = "<group>";
-		};
-		84C222A32CF68F86005FF976 /* Helper */ = {
-			isa = PBXGroup;
-			children = (
-				84C222A42CF68FA2005FF976 /* ContextMenuHelper.swift */,
-			);
-			path = Helper;
 			sourceTree = "<group>";
 		};
 		84C222A82CF74197005FF976 /* Filter */ = {
@@ -729,7 +718,6 @@
 				84AFF9C02CF5F0CB00E8867E /* GlobalConstants.swift in Sources */,
 				849188582CC09A8000523431 /* ConfiguratorFactory.swift in Sources */,
 				8491883C2CC09A7700523431 /* TCategory.swift in Sources */,
-				84C222A52CF68FA3005FF976 /* ContextMenuHelper.swift in Sources */,
 				84AFF9BE2CF5EF9B00E8867E /* KeychainService.swift in Sources */,
 				849187FB2CC09A1500523431 /* GeometricParams.swift in Sources */,
 				84AFF9C42CF5F1E900E8867E /* UIImage + Extensions.swift in Sources */,
