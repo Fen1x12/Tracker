@@ -8,29 +8,67 @@
 import UIKit
 
 // MARK: - UICollectionViewDelegate
-extension TrackersViewController: UICollectionViewDelegate {
+extension TrackersViewController {
     func collectionView(
         _ collectionView: UICollectionView,
         contextMenuConfigurationForItemAt indexPath: IndexPath,
-        point: CGPoint) -> UIContextMenuConfiguration? {
-        let config = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            let deleteAction = UIAction(
-                title: "Удалить",
-                attributes: .destructive) { [weak self] _ in
-                self?.presenter?.deleteTracker(at: indexPath)
-            }
-            
-            let editAction = UIAction(
-                title: "Редактировать"
-            ) { [weak self] _ in
-                self?.presenter?.editTracker(at: indexPath)
-            }
-            
-            return UIMenu(
-                title: "",
-                children: [editAction, deleteAction]
-            )
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard indexPath.section < visibleCategories.count else {
+            return nil
         }
-        return config
+        
+        let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
+        let contextMenuHelper = TrackersContextMenuHelper(
+            tracker: tracker,
+            indexPath: indexPath,
+            presenter: presenter,
+            viewController: self,
+            completedTrackers: completedTrackers
+        )
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: {
+            guard let cell = collectionView.cellForItem(at: indexPath) as? TrackersCardCell else {
+                return nil
+            }
+
+            let previewViewController = UIViewController()
+            let snapshot = cell.messageStack.snapshotView(afterScreenUpdates: true)
+            previewViewController.view = snapshot
+            snapshot?.frame = cell.messageStack.bounds
+            previewViewController.preferredContentSize = cell.messageStack.bounds.size
+            
+            return previewViewController
+        }, actionProvider: { _ in
+            return contextMenuHelper.createContextMenu()
+        })
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willEndContextMenuInteraction configuration: UIContextMenuConfiguration,
+        animator: UIContextMenuInteractionAnimating?) {
+            
+            animator?.addCompletion { [weak self] in
+                guard let self else { return }
+                
+                if let indexPath = configuration.identifier as? IndexPath {
+                    if let cell = self.collectionView.cellForItem(at: indexPath) as? TrackersCardCell {
+                        cell.setNeedsLayout()
+                        cell.layoutIfNeeded()
+                    }
+                }
+            }
+        }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let trackersCell = cell as? TrackersCardCell {
+            trackersCell.layer.cornerRadius = 16
+            trackersCell.layer.masksToBounds = true
+        }
     }
 }

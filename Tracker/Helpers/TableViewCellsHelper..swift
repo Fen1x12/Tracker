@@ -10,7 +10,6 @@ import UIKit
 // MARK: - ConfigureTableViewCellsHelper
 final class ConfigureTableViewCellsHelper {
     
-    // Конфигурация ячейки типа трекера
     static func configureTypeTrackersCell(
         at indexPath: IndexPath,
         tableView: UITableView
@@ -20,9 +19,9 @@ final class ConfigureTableViewCellsHelper {
         if #available(iOS 14.0, *) {
             var content = cell.defaultContentConfiguration()
             if indexPath.section == 0 {
-                content.text = "Привычка"
+                content.text = LocalizationKey.habit.localized()
             } else if indexPath.section == 1 {
-                content.text = "Нерегулярное событие"
+                content.text = LocalizationKey.irregularEvent.localized()
             }
             content.textProperties.alignment = .center
             content.textProperties.color = .ypBackground
@@ -30,9 +29,9 @@ final class ConfigureTableViewCellsHelper {
             cell.contentConfiguration = content
         } else {
             if indexPath.section == 0 {
-                cell.textLabel?.text = "Привычка"
+                cell.textLabel?.text = LocalizationKey.habit.localized()
             } else if indexPath.section == 1 {
-                cell.textLabel?.text = "Нерегулярное событие"
+                cell.textLabel?.text = LocalizationKey.irregularEvent.localized()
             }
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -46,7 +45,6 @@ final class ConfigureTableViewCellsHelper {
         return cell
     }
     
-    // Конфигурация ячейки категории
     static func configureCategoryCell(
         at indexPath: IndexPath,
         tableView: UITableView,
@@ -62,7 +60,7 @@ final class ConfigureTableViewCellsHelper {
         }
         
         guard let itemTitle = dataProvider?.item(at: indexPath.row) else {
-            print("Ошибка: itemTitle отсутствует для индекса \(indexPath.row)")
+            Logger.shared.log(.error, message: "Ошибка: itemTitle отсутствует для индекса \(indexPath.row)")
             return UITableViewCell()
         }
         
@@ -74,19 +72,24 @@ final class ConfigureTableViewCellsHelper {
             cell.accessoryType = .none
         }
         
-        configureBaseCell(cell, at: indexPath, totalRows: dataProvider?.numberOfItems ?? 0)
-        configureSeparator(cell, isLastRow: indexPath.row == (dataProvider?.numberOfItems ?? 0) - 1)
+        configureBaseCell(
+            cell,
+            at: indexPath,
+            totalRows: dataProvider?.numberOfItems ?? 0
+        )
+        configureSeparator(
+            cell,
+            isLastRow: indexPath.row == (dataProvider?.numberOfItems ?? 0) - 1
+        )
         
         return cell
     }
     
-    // Конфигурация TextView ячейки
     static func configureTextViewCell(at indexPath: IndexPath,
-                               tableView: UITableView,
-                               categories: [TrackerCategory],
-                               viewController: BaseTrackerViewController,
-                               editingCategoryIndex: IndexPath?,
-                               isAddingCategory: Bool
+                                      tableView: UITableView,
+                                      categories: [TrackerCategory],
+                                      viewController: BaseTrackerViewController,
+                                      editingCategoryIndex: IndexPath?
     ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: TextViewCell.reuseIdentifier,
@@ -95,32 +98,38 @@ final class ConfigureTableViewCellsHelper {
             return UITableViewCell()
         }
         cell.delegate = viewController
-
+        
         if let editingIndex = editingCategoryIndex {
             guard editingIndex.row < categories.count else {
-                print("Ошибка: индекс \(editingIndex.row) выходит за пределы массива категорий.")
+                Logger.shared.log(
+                    .error,
+                    message: "Ошибка: индекс \(editingIndex.row) выходит за пределы массива категорий."
+                )
                 return UITableViewCell()
             }
             
-            let category = categories[editingIndex.row]
-            cell.getText().text = category.title
-            viewController.title = "Редактирование категории"
+            cell.changeText(categories[editingIndex.row].title, editing: true)
+            
+            viewController.title = LocalizationKey.editCategory.localized()
         } else {
-            cell.getText().text = !isAddingCategory ? "" : "Введите название категории"
-            viewController.title = "Новая категория"
+            cell.changeText(
+                LocalizationKey.enterCategoryName.localized(),
+                editing: false
+            )
+            viewController.title = LocalizationKey.newCategory.localized()
         }
-
+        
         configureBaseCell(cell, at: indexPath, totalRows: 1)
         configureSeparator(cell, isLastRow: true)
         
         return cell
     }
     
-    // Конфигурация ячейки TextView
     static func configureTextViewCell(
         for tableView: UITableView,
         at indexPath: IndexPath,
-        delegate: TextViewCellDelegate
+        delegate: TextViewCellDelegate,
+        trackerToEdit: Tracker?
     ) -> TextViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: TextViewCell.reuseIdentifier,
@@ -128,12 +137,19 @@ final class ConfigureTableViewCellsHelper {
         ) as? TextViewCell else {
             return TextViewCell()
         }
+        
+        if let trackerToEdit = trackerToEdit {
+            cell.changeText(
+                trackerToEdit.name,
+                editing: true
+            )
+        }
+        
         cell.delegate = delegate
         cell.selectionStyle = .none
         return cell
     }
     
-    // Базовая конфигурация ячейки (BaseCell)
     static func configureBaseCell(
         _ cell: UITableViewCell,
         at indexPath: IndexPath,
@@ -145,20 +161,30 @@ final class ConfigureTableViewCellsHelper {
         cell.tintColor = .systemBlue
         
         if totalRows == 1 {
-            cell.layer.cornerRadius = 15
-            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            cell.layer.cornerRadius = 16
+            cell.layer.maskedCorners = [
+                .layerMinXMinYCorner,
+                .layerMaxXMinYCorner,
+                .layerMinXMaxYCorner,
+                .layerMaxXMaxYCorner
+            ]
         } else if indexPath.row == 0 {
-            cell.layer.cornerRadius = 15
-            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            cell.layer.cornerRadius = 16
+            cell.layer.maskedCorners = [
+                .layerMinXMinYCorner,
+                .layerMaxXMinYCorner
+            ]
         } else if indexPath.row == totalRows - 1 {
-            cell.layer.cornerRadius = 15
-            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            cell.layer.cornerRadius = 16
+            cell.layer.maskedCorners = [
+                .layerMinXMaxYCorner,
+                .layerMaxXMaxYCorner
+            ]
         } else {
             cell.layer.cornerRadius = 0
         }
     }
     
-    // Конфигурация ячеек ButtonCell
     static func configureButtonCell(
         _ cell: UITableViewCell,
         at indexPath: IndexPath,
@@ -171,7 +197,9 @@ final class ConfigureTableViewCellsHelper {
         
         if #available(iOS 14.0, *) {
             var content = cell.defaultContentConfiguration()
-            content.text = indexPath.row == 0 ? "Категория" : "Расписание"
+            content.text = indexPath.row == 0
+            ? LocalizationKey.category.localized()
+            : LocalizationKey.schedule.localized()
             content.textProperties.font = UIFont.systemFont(ofSize: 17, weight: .regular)
             content.textProperties.adjustsFontSizeToFitWidth = true
             content.textProperties.minimumScaleFactor = 0.8
@@ -191,7 +219,9 @@ final class ConfigureTableViewCellsHelper {
             
             cell.contentConfiguration = content
         } else {
-            cell.textLabel?.text = indexPath.row == 0 ? "Категория" : "Расписание"
+            cell.textLabel?.text = indexPath.row == 0
+            ? LocalizationKey.category.localized()
+            : LocalizationKey.schedule.localized()
             cell.detailTextLabel?.textColor = .ypGray
             cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
             cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
@@ -208,7 +238,6 @@ final class ConfigureTableViewCellsHelper {
         }
     }
     
-    // Конфигурация сепаратора
     static func configureSeparator(
         _ cell: UITableViewCell,
         isLastRow: Bool
@@ -231,12 +260,12 @@ final class ConfigureTableViewCellsHelper {
         ])
     }
     
-    // Конфигурация ячеек для Emoji и Colors
     static func configureEmojiAndColorCell(
         for tableView: UITableView,
         at indexPath: IndexPath,
         with items: [String],
-        isEmoji: Bool
+        isEmoji: Bool,
+        selectedElement: String?
     ) -> EmojiesAndColorsTableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: EmojiesAndColorsTableViewCell.reuseIdentifier,
@@ -244,17 +273,17 @@ final class ConfigureTableViewCellsHelper {
         ) as? EmojiesAndColorsTableViewCell else {
             return EmojiesAndColorsTableViewCell()
         }
-        cell.configure(with: items, isEmoji: isEmoji)
+        cell.configure(with: items, isEmoji: isEmoji, selectedElement: selectedElement)
         cell.selectionStyle = .none
         return cell
     }
     
-    // Конфигурация ячейки с кнопками "Создать" и "Отменить"
     static func configureCreateButtonsCell(
         for tableView: UITableView,
         at indexPath: IndexPath,
         onCreateTapped: @escaping () -> Void,
-        onCancelTapped: @escaping () -> Void
+        onCancelTapped: @escaping () -> Void,
+        isEditing: Bool
     ) -> CreateButtonsViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: CreateButtonsViewCell.reuseIdentifier,
@@ -265,7 +294,65 @@ final class ConfigureTableViewCellsHelper {
         
         cell.onCreateButtonTapped = onCreateTapped
         cell.onCancelButtonTapped = onCancelTapped
+        
+        cell.updateCreateButtonTitle(isEditing: isEditing)
+        
         cell.selectionStyle = .none
         return cell
+    }
+    
+    // MARK: - Header Configuration
+    static func configureCounterHeaderView(
+        with daysCount: Int
+    ) -> UIView {
+        let headerView = UIView()
+        headerView.backgroundColor = .clear
+        
+        let counterLabel = UILabel()
+        counterLabel.translatesAutoresizingMaskIntoConstraints = false
+        counterLabel.textColor = .ypBlack
+        counterLabel.font = UIFont.boldSystemFont(ofSize: 32)
+        counterLabel.textAlignment = .center
+        
+        counterLabel.text = getLocalizedDayString(for: daysCount)
+        
+        headerView.addSubview(counterLabel)
+        
+        NSLayoutConstraint.activate([
+            counterLabel.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+            counterLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 25),
+            counterLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -40)
+        ])
+        
+        return headerView
+    }
+    
+    static func getLocalizedDayString(for countDays: Int) -> String {
+        let localizedFormat = NSLocalizedString("day_count", comment: "")
+        return String.localizedStringWithFormat(localizedFormat, countDays)
+    }
+    
+    static func configureTextHeaderView(
+        title: String
+    ) -> UIView {
+        let headerView = UIView()
+        headerView.backgroundColor = .clear
+        
+        let headerLabel = UILabel()
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerLabel.textColor = .ypBlack
+        headerLabel.font = UIFont.boldSystemFont(ofSize: 19)
+        headerLabel.text = title
+        
+        headerView.addSubview(headerLabel)
+        
+        NSLayoutConstraint.activate([
+            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            headerLabel.topAnchor.constraint(equalTo: headerView.topAnchor),
+            headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor)
+        ])
+        
+        return headerView
     }
 }

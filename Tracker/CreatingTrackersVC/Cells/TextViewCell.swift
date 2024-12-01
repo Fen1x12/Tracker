@@ -22,7 +22,7 @@ final class TextViewCell: UITableViewCell {
     
     weak var delegate: TextViewCellDelegate?
     
-    private let placeholderText = "Введите название трекера"
+    private let placeholderText = LocalizationKey.textViewPlaceholder.localized()
     private var isVisiblePlaceholder = true
     
     private let textView: UITextView = {
@@ -35,7 +35,7 @@ final class TextViewCell: UITableViewCell {
         textView.textColor = .lightGray
         textView.tintColor = .systemBlue
         textView.isScrollEnabled = false
-        textView.layer.cornerRadius = 15
+        textView.layer.cornerRadius = 16
         textView.layer.masksToBounds = true
         textView.backgroundColor = .ypWhiteGray
         textView.textAlignment = .left
@@ -55,12 +55,14 @@ final class TextViewCell: UITableViewCell {
         )
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
+ 
         if isVisiblePlaceholder {
             textView.text = placeholderText
             textView.textColor = .lightGray
@@ -77,12 +79,19 @@ final class TextViewCell: UITableViewCell {
         ])
     }
     
-    func isPlaceholderActive() -> Bool {
-        return getText().text == placeholderText
-    }
-    
     func getText() -> UITextView {
         return textView
+    }
+    
+    func changeText(_ text: String, editing: Bool) {
+        if editing {
+            isVisiblePlaceholder = false
+            textView.textColor = .ypBlack
+            textView.text = text
+        } else {
+            isVisiblePlaceholder = true
+            textView.text = text
+        }
     }
 }
 

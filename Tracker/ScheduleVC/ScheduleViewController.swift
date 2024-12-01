@@ -16,10 +16,10 @@ final class ScheduleViewController: BaseTrackerViewController {
     weak var delegate: ScheduleSelectionDelegate?
     
     private lazy var addDoneButton = UIButton(
-        title: "Готово",
+        title: LocalizationKey.doneCategoryButton.localized(),
         backgroundColor: .ypBlack,
         titleColor: .ypBackground,
-        cornerRadius: 20,
+        cornerRadius: 16,
         font: UIFont.systemFont(ofSize: 16, weight: .medium),
         target: self,
         action: #selector(addDoneButtonAction)
@@ -34,7 +34,6 @@ final class ScheduleViewController: BaseTrackerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        //tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,12 +64,19 @@ final class ScheduleViewController: BaseTrackerViewController {
         let day = DayOfTheWeek.allCases[indexPath.row]
         let isDaySelected = selectedDays.contains(day)
         
-        cell.configure(with: day.rawValue, showSwitch: true, isSwitchOn: isDaySelected)
+        cell.configure(with: day.localized(), showSwitch: true, isSwitchOn: isDaySelected)
         
         cell.toggleSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
         
-        ConfigureTableViewCellsHelper.configureBaseCell(cell, at: indexPath, totalRows: DayOfTheWeek.allCases.count)
-        ConfigureTableViewCellsHelper.configureSeparator(cell, isLastRow: indexPath.row == DayOfTheWeek.allCases.count - 1)
+        ConfigureTableViewCellsHelper.configureBaseCell(
+            cell,
+            at: indexPath,
+            totalRows: DayOfTheWeek.allCases.count
+        )
+        ConfigureTableViewCellsHelper.configureSeparator(
+            cell,
+            isLastRow: indexPath.row == DayOfTheWeek.allCases.count - 1
+        )
         
         return cell
     }
@@ -107,7 +113,7 @@ extension ScheduleViewController {
     override func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            switch viewControllerType {
+            switch trackerViewControllerType {
             case .schedule:
                 return configureScheduleCell(at: indexPath)
             default:

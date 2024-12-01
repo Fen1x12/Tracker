@@ -10,7 +10,7 @@ import CoreData
 
 final class TrackerStore: NSObject {
     private let persistentContainer: NSPersistentContainer
-    private let fetchedResultsController: NSFetchedResultsController<TrackerCoreData>
+    private var fetchedResultsController: NSFetchedResultsController<TrackerCoreData>
 
     init(persistentContainer: NSPersistentContainer) {
         self.persistentContainer = persistentContainer
@@ -46,8 +46,14 @@ final class TrackerStore: NSObject {
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.isRegularEvent = tracker.isRegularEvent
         trackerCoreData.creationDate = tracker.creationDate
+        trackerCoreData.isPinned = false
         
-        // Поиск или создание категории
+        trackerCoreData.categoryTitle = tracker.isPinned
+        ? LocalizationKey.pinnedCategory.localized()
+        : tracker.categoryTitle
+        
+        trackerCoreData.originalCategoryTitle = tracker.originalCategoryTitle ?? tracker.categoryTitle
+        
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "title == %@", tracker.categoryTitle)
         
@@ -70,9 +76,9 @@ final class TrackerStore: NSObject {
             throw error
         }
         
-        // Сохранение расписания как массива строк
-        if let scheduleData = try? JSONEncoder().encode(tracker.schedule) {
-            trackerCoreData.schedule = scheduleData as NSData
+        if let scheduleData = try? JSONEncoder().encode(tracker.schedule),
+           let scheduleString = String(data: scheduleData, encoding: .utf8) {
+            trackerCoreData.schedule = scheduleString
         } else {
             Logger.shared.log(
                 .error,
@@ -81,7 +87,6 @@ final class TrackerStore: NSObject {
             )
         }
         
-        // Сохранение трекера и категории
         do {
             try context.save()
         } catch {
@@ -115,6 +120,58 @@ final class TrackerStore: NSObject {
         }
     }
     
+    func updateTracker(_ tracker: Tracker) throws {
+        let context = persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
+
+        do {
+            if let trackerCoreData = try context.fetch(fetchRequest).first {
+                trackerCoreData.name = tracker.name
+                trackerCoreData.color = tracker.color
+                trackerCoreData.emoji = tracker.emoji
+                trackerCoreData.isPinned = tracker.isPinned
+                
+                let categoryFetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+                categoryFetchRequest.predicate = NSPredicate(format: "title == %@", tracker.categoryTitle)
+                
+                let categories = try context.fetch(categoryFetchRequest)
+
+                if let category = categories.first {
+                    trackerCoreData.categoryTitle = category.title
+                } else {
+                    let newCategory = TrackerCategoryCoreData(context: context)
+                    newCategory.title = tracker.categoryTitle
+                    trackerCoreData.categoryTitle = newCategory.title
+                }
+
+                do {
+                    let scheduleData = try JSONEncoder().encode(tracker.schedule)
+                    trackerCoreData.schedule = String(data: scheduleData, encoding: .utf8)
+                } catch {
+                    Logger.shared.log(
+                        .error,
+                        message: "Ошибка сериализации расписания при обновлении трекера: \(tracker.name)", metadata: ["❌": error.localizedDescription]
+                    )
+                    throw error
+                }
+
+                try context.save()
+            } else {
+                Logger.shared.log(
+                    .error,
+                    message: "Трекер не найден для обновления: \(tracker.id)"
+                )
+            }
+        } catch {
+            Logger.shared.log(
+                .error, message: "Ошибка при обновлении трекера: \(tracker.name)",
+                metadata: ["❌": error.localizedDescription]
+            )
+            throw error
+        }
+    }
+
     func fetchTrackers() -> [TrackerCoreData] {
         do {
             try fetchedResultsController.performFetch()
@@ -130,21 +187,22 @@ final class TrackerStore: NSObject {
         }
     }
     
-    func fetchTrackers(for dayOfTheWeek: DayOfTheWeek) -> [TrackerCoreData] {
-        let dayOfWeekString = String(dayOfTheWeek.rawValue)
+    func fetchTrackers(predicate: NSPredicate? = nil) {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        fetchRequest.predicate = predicate
         
-        fetchedResultsController.fetchRequest.predicate = NSPredicate(format: "schedule CONTAINS[cd] %@", dayOfWeekString)
+        fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: persistentContainer.viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
         
         do {
             try fetchedResultsController.performFetch()
-            return fetchedResultsController.fetchedObjects ?? []
         } catch {
-            Logger.shared.log(
-                .error,
-                message: "Ошибка при фильтрации трекеров по дню недели",
-                metadata: ["❌": error.localizedDescription]
-            )
-            return []
+            Logger.shared.log(.error, message: "Ошибка при выборке трекеров: \(error.localizedDescription)")
         }
     }
 }

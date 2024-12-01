@@ -23,16 +23,16 @@ final class CategoryViewController: BaseTrackerViewController {
     private lazy var placeholder: Placeholder = {
         let placeholder = Placeholder(
             image: UIImage(named: PHName.trackersPH.rawValue),
-            text: "Привычки и события можно\nобъединить по смыслу"
+            text: LocalizationKey.categoryPlaceholder.localized()
         )
         return placeholder
     }()
     
     private lazy var addCategoryButton = UIButton(
-        title: "Добавить категорию",
+        title: LocalizationKey.addCategory.localized(),
         backgroundColor: .ypBlack,
         titleColor: .ypBackground,
-        cornerRadius: 20,
+        cornerRadius: 16,
         font: UIFont.systemFont(
             ofSize: 16,
             weight: .medium
@@ -52,7 +52,6 @@ final class CategoryViewController: BaseTrackerViewController {
     
     // MARK: - Initializer
     init() {
-        // Инициализация ViewModel
         self.viewModel = CategoryViewModel(
             trackerCategoryStore: TrackerCategoryStore(
                 persistentContainer: CoreDataStack.shared.persistentContainer
@@ -62,6 +61,7 @@ final class CategoryViewController: BaseTrackerViewController {
         dataProvider = viewModel
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -82,6 +82,7 @@ final class CategoryViewController: BaseTrackerViewController {
     
     private func setupBindings() {
         viewModel.onCategoriesUpdated = { [weak self] categories in
+            self?.categories = categories
             self?.tableView.reloadData()
         }
         
@@ -91,13 +92,13 @@ final class CategoryViewController: BaseTrackerViewController {
         }
         
         viewModel.onPlaceholderStateUpdated = { [weak self] isVisible in
-            self?.placeholder.view.isHidden = !isVisible
+            self?.placeholder.isHidden = !isVisible
         }
     }
     
     // MARK: - UI Setup
     private func setupUI() {
-        [stack, placeholder.view].forEach {
+        [stack, placeholder].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -108,8 +109,8 @@ final class CategoryViewController: BaseTrackerViewController {
             stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             stack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             
-            placeholder.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            placeholder.view.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            placeholder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            placeholder.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60)
         ])
@@ -125,6 +126,7 @@ final class CategoryViewController: BaseTrackerViewController {
             let categoryName = (tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextViewCell)?.getText().text ?? ""
             viewModel.addCategory(named: categoryName)
             isAddingCategory = false
+            placeholder.isHidden = true
         } else {
             isAddingCategory.toggle()
         }
@@ -135,16 +137,16 @@ final class CategoryViewController: BaseTrackerViewController {
     // MARK: - Overriding updateUI
     override func updateUI() {
         super.updateUI()
-
+        
         addCategoryButton.isEnabled = !isAddingCategory
         addCategoryButton.backgroundColor = isAddingCategory ? .ypGray : .ypBlack
-        addCategoryButton.setTitle(isAddingCategory ? "Готово" : "Добавить категорию", for: .normal)
-
+        addCategoryButton.setTitle(
+            isAddingCategory
+            ? LocalizationKey.doneCategoryButton.localized()
+            : LocalizationKey.addCategory.localized(), for: .normal
+        )
+        
         tableView.reloadData()
-    }
-    
-    private func updatePlaceholder() {
-        placeholder.view.isHidden = !categories.isEmpty || isAddingCategory
     }
 
     override func textViewCellDidChange(_ cell: TextViewCell) {

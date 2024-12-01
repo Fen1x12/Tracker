@@ -8,19 +8,19 @@
 import UIKit
 
 // MARK: - UICollectionViewDataSource
-extension TrackersViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return categories.count
+extension TrackersViewController {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return visibleCategories.count
     }
     
-    func collectionView(
+    override func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return categories[section].trackers.count
+        return visibleCategories[section].trackers.count
     }
     
-    func collectionView(
+    override func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
@@ -33,7 +33,7 @@ extension TrackersViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let trackers = categories[indexPath.section].trackers
+        let trackers = visibleCategories[indexPath.section].trackers
         guard indexPath.row < trackers.count else {
             Logger.shared.log(
                 .error,
@@ -67,14 +67,23 @@ extension TrackersViewController: UICollectionViewDataSource {
             isRegularEvent: isRegularEvent
         )
         
+        cell.longPressHandler = { [weak self] in
+            self?.presenter?.showContextMenu(for: tracker, at: indexPath)
+        }
+        
         cell.selectButtonTappedHandler = { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             if isDateValidForCompletion {
                 self.presenter?.handleTrackerSelection(
                     tracker,
                     isCompleted: isCompletedToday,
                     date: self.currentDate
+                )
+                AnalyticsService.logEvent(
+                    event: AnalyticsReport.AnalyticsEventInfo.clickButton,
+                    screen: AnalyticsReport.AnalyticsScreenInfo.main,
+                    item: AnalyticsReport.AnalyticsItemListInfo.trackItems
                 )
                 collectionView.reloadItems(at: [indexPath])
             }
@@ -93,7 +102,7 @@ extension TrackersViewController: UICollectionViewDataSource {
             withReuseIdentifier: SectionHeaderView.reuseIdentifier,
             for: indexPath) as? SectionHeaderView else { return UICollectionReusableView() }
         
-        let title = categories[indexPath.section].title
+        let title = visibleCategories[indexPath.section].title
         header.addTitle(title)
         
         return header

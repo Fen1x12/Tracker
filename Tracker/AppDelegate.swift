@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import AppMetricaCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        
+        if KeychainService.shared.get(valueFor: "apiKey") == nil {
+            _ = KeychainService.shared.set(value: "1f223b95-a149-4bfd-b3fe-905866840858", for: "apiKey")
+        }
+        
+        AnalyticsService.activate()
         return true
     }
     
@@ -22,3 +29,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CoreDataStack.shared.saveContext()
     }
 }
+
